@@ -7,8 +7,10 @@ from .models import User
 # Create your views here.
 
 def index(request):
-    context = {}
+    context = {"user" : False}
+    print(request.session.keys())
     if "user" in request.session:
+        print("user")
         context["user"] = request.session["user"]
         context["username"] = request.session["username"]
         context["balance"] = request.session["balance"]
@@ -16,6 +18,12 @@ def index(request):
 
 def login(request):
     return render(request ,"tickets/login.html")
+
+def logout(request):
+    del request.session["user"]
+    del request.session["username"]
+    del request.session["balance"]
+    return redirect("/")
 
 def auth(request):
     username = request.POST.get("username")
