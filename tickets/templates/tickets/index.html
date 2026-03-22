@@ -7,5 +7,15 @@
         Welcome to Ticketline! Your number one place for buying tickets! </br>
         Now with extra security issues, and insane service fees!
     </b>
-</html>
+    </br>
+    {% if user %}
+    <a href="/logout">Log out</a>
+    <p>
+        Logged in as {{username}} </br>
+        You have currently {{balance}}$ on your account.
+    </p>
 
+    {% else %}
+    <a href="/login">Log in</a>
+    {% endif %}
+</html>
