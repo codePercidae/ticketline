@@ -8,12 +8,22 @@
         Now with extra security issues, and insane service fees!
     </b>
     </br>
-    {% if user %}
+    {% if admin %}
+
+    {% elif user %}
     <a href="/logout">Log out</a>
     <p>
         Logged in as {{username}} </br>
-        You have currently {{balance}}$ on your account.
+        You have currently {{balance}}$ on your account</br></br>
+        Would you like to buy a ticket?
     </p>
+    <ul>
+        {% for event in events %}
+        <li>
+            <a href="buy/{{event.id}}">{{event.name}}</a>
+        </li>
+        {% endfor %}
+    </ul>
 
     {% else %}
     <a href="/login">Log in</a>
