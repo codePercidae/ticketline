@@ -51,5 +51,14 @@ def buy(request, event_id):
     return render(request, "tickets/buy.html", context)
 
 def add_to_cart(request, event_id):
-    request.session["shoppingcart"].insert(event_id)
+    request.session["shoppingcart"].append(event_id)
+    print(request.session["shoppingcart"])
+    request.session.modified = True
     return redirect("/")
+
+def checkout(request):
+    context = {"items" : []}
+    for elem in request.session["shoppingcart"]:
+        res = Event.objects.get(pk=elem)
+        context["items"].append(res)
+    return render(request, "tickets/checkout.html", context=context)

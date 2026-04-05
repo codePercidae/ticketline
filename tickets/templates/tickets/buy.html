@@ -3,11 +3,14 @@
 <html>
     <body>
         <h2>{{event.name}}</h2>
+        <a href="/">Back to front page</a>
         <p>
             This concert costs {{event.price}}$. A true bargain if you ask me. <br>
             Would you like to add this event to your shopping cart? <br>
             (Shopping cart is just a metaphor here, we ain't giving you nothing for free.) <br>
-            <button type="button" onclick="">Add to shopping cart</button>
         </p>
+        <form action="add_to_cart/{{event.id}}">
+            <input type="submit" value="Add to shopping cart"/>
+        </form>
     </body>
 </html>

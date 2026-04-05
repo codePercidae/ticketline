@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+    <body>
+        <h2>Chekout</h2>
+
+        <form action="/transaction">
+            <p>
+                Following tickets are currently in shopping cart:
+                {% for item in items %}
+                Name: {{item.name}} <br>
+                quantity: {{item.amount}} <br><br>
+                {% endfor %}
+                Do you wish to buy these?
+                <button type="submit" >Buy!</button>
+                
+            </p>
+    </body>
+</html>
