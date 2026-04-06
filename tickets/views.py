@@ -12,7 +12,7 @@ def index(request):
         context["user"] = request.session["user"]
         context["username"] = request.session["username"]
         context["balance"] = request.session["balance"]
-        context["shoppingcart"] = len(request.session["shoppingcart"])
+        context["shoppingcart"] = sum(request.session["shoppingcart"].values())
         if request.session["admin"]:
             context["admin"] = True
     events = Event.objects.all()
@@ -40,7 +40,7 @@ def auth(request):
             request.session["username"] = u.username
             request.session["balance"] = u.balance
             request.session["admin"] = False
-            request.session["shoppingcart"] = []
+            request.session["shoppingcart"] = {}
         if u.admin:
             request.session["admin"] = True
     return redirect("/")
@@ -51,14 +51,21 @@ def buy(request, event_id):
     return render(request, "tickets/buy.html", context)
 
 def add_to_cart(request, event_id):
-    request.session["shoppingcart"].append(event_id)
-    print(request.session["shoppingcart"])
+    event_id = str(event_id)
+    if event_id not in request.session["shoppingcart"]:
+        request.session["shoppingcart"][event_id] = 1
+    else:
+        request.session["shoppingcart"][event_id] += 1
     request.session.modified = True
     return redirect("/")
 
 def checkout(request):
     context = {"items" : []}
-    for elem in request.session["shoppingcart"]:
-        res = Event.objects.get(pk=elem)
-        context["items"].append(res)
+    totalsum = 0
+    for id, amount in request.session["shoppingcart"].items():
+        res = Event.objects.get(pk=id)
+        totalsum += res.price * amount
+        context["items"].append({"id" : id, "amount" : amount, "event" : res})
+    context["totalsum"] = totalsum
+    print(context)
     return render(request, "tickets/checkout.html", context=context)

@@ -6,11 +6,19 @@
 
         <form action="/transaction">
             <p>
-                Following tickets are currently in shopping cart:
+                Following tickets are currently in shopping cart: <br>
+                <ol>
                 {% for item in items %}
-                Name: {{item.name}} <br>
-                quantity: {{item.amount}} <br><br>
+                <li>Name: {{item.event.name}}
+                    <ul>
+                        <li>
+                        quantity: {{item.amount}}
+                        </li>
+                    </ul>
+                </li>
                 {% endfor %}
+                </ol>
+                Total: {{totalsum}}% <br>
                 Do you wish to buy these?
                 <button type="submit" >Buy!</button>
                 
