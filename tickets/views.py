@@ -70,12 +70,11 @@ def checkout(request):
 
 def transaction(request, totalsum):
     u = User.objects.get(pk=request.session["user"])
-    print(u)
     if u.balance >= totalsum:
         u.balance -= totalsum
         u.save()
         request.session["balance"] -= totalsum
         request.session["shoppingcart"] = {}
+        return HttpResponse("Transaction complete, enjoy your concert!")
     else:
-        pass
-    return redirect("/")
+        return HttpResponse("Not enough credits!!")
