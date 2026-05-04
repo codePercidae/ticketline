@@ -7,7 +7,6 @@ from .models import User, Event
 
 def index(request):
     context = {"user" : False, "admin" : False}
-    print(request.session.items())
     if "user" in request.session:
         context["user"] = request.session["user"]
         context["username"] = request.session["username"]
@@ -67,5 +66,16 @@ def checkout(request):
         totalsum += res.price * amount
         context["items"].append({"id" : id, "amount" : amount, "event" : res})
     context["totalsum"] = totalsum
-    print(context)
     return render(request, "tickets/checkout.html", context=context)
+
+def transaction(request, totalsum):
+    u = User.objects.get(pk=request.session["user"])
+    print(u)
+    if u.balance >= totalsum:
+        u.balance -= totalsum
+        u.save()
+        request.session["balance"] -= totalsum
+        request.session["shoppingcart"] = {}
+    else:
+        pass
+    return redirect("/")

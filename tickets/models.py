@@ -8,6 +8,12 @@ class User(models.Model):
     balance = models.IntegerField()
     admin = models.BooleanField()
 
+    def __str__(self):
+        return f"User {self.username}, password: {self.password}, balance: {self.balance}, admin: {self.admin}"
+
 class Event(models.Model):
     name = models.CharField()
     price = models.IntegerField()
+
+    def __str__(self):
+        return f"Event {self.name}, price: {self.price}"
