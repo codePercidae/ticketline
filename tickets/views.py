@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
-from .models import User, Event
+from .models import User, Event, Security_log
 
 # Create your views here.
 
@@ -33,6 +32,7 @@ def auth(request):
     username = request.POST.get("username")
     password = request.POST.get("password")
     result = User.objects.filter(username = username)
+    login_completed = False
     for u in result:
         if u.password == password:
             request.session["user"] = u.id
@@ -40,8 +40,11 @@ def auth(request):
             request.session["balance"] = u.balance
             request.session["admin"] = False
             request.session["shoppingcart"] = {}
+            login_completed = True
         if u.admin:
             request.session["admin"] = True
+    #security_log(username, password, login_completed)
+    
     return redirect("/")
 
 def buy(request, event_id):
@@ -78,3 +81,8 @@ def transaction(request, totalsum):
         return HttpResponse("Transaction complete, enjoy your concert!")
     else:
         return HttpResponse("Not enough credits!!")
+
+def security_log(username, password, success):
+    s = Security_log.objects.create(username=username, password=password, success=success)
+    s.save()
+    return

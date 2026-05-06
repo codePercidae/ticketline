@@ -17,3 +17,10 @@ class Event(models.Model):
 
     def __str__(self):
         return f"Event {self.name}, price: {self.price}"
+    
+'''This probably should also have some other fields in order to
+actually help the security measures'''
+class Security_log(models.Model):
+    username = models.CharField()
+    password = models.CharField()
+    success = models.BooleanField()
